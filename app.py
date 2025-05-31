@@ -15,11 +15,9 @@ db = client["model_ml"]
 collection = db["chatbot_chats"]
 
 # --- Load Model and Tokenizer ---
-device = "cuda" if torch.cuda.is_available() else "cpu"
-base_model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen1.5-1.8B-Chat", trust_remote_code=True)
-model = PeftModel.from_pretrained(base_model, "qwen-psychika-lora")  # Load LoRA
-model.to(device)
-tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen1.5-1.8B-Chat", trust_remote_code=True)
+device = "cpu"
+tokenizer = AutoTokenizer.from_pretrained("./qwen-psychika-lora", trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained("./qwen-psychika-lora", trust_remote_code=True).to(device)
 
 # --- Utility: Fetch last 5 messages per user ---
 def get_chat_history(user_id, limit=5):
@@ -56,7 +54,7 @@ def save_to_db(user_id, message, response):
         "user_id": user_id,
         "message": message,
         "response": response,
-        "timestamp": datetime.utcnow()
+        "timestamp": datetime.now()
     }
     collection.insert_one(chat_record)
 
