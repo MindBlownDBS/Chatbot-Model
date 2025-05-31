@@ -44,7 +44,7 @@ def generate_response(user_id, message):
     prompt = build_prompt(history, message)
     input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(device)
 
-    output = model.generate(input_ids, max_new_tokens=256, do_sample=True, top_p=0.9, temperature=0.7)
+    output = model.generate(input_ids, max_new_tokens=256, do_sample=True, top_p=0.85, temperature=0.9)
     result = tokenizer.decode(output[0][input_ids.shape[-1]:], skip_special_tokens=True).strip()
     return result
 
