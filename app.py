@@ -16,8 +16,13 @@ collection = db["chatbot_chats"]
 
 # --- Load Model and Tokenizer ---
 device = "cpu"
-tokenizer = AutoTokenizer.from_pretrained("./qwen-psychika-lora", trust_remote_code=True)
-model = AutoModelForCausalLM.from_pretrained("./qwen-psychika-lora", trust_remote_code=True).to(device)
+base_model_path = "./qwen-1.5-1.8B-local"  # folder lokal
+adapter_path = "./qwen-psychika-lora"  # LoRA folder lokal
+
+tokenizer = AutoTokenizer.from_pretrained(base_model_path, trust_remote_code=True)
+base_model = AutoModelForCausalLM.from_pretrained(base_model_path, trust_remote_code=True)
+
+model = PeftModel.from_pretrained(base_model, adapter_path).to(device)
 
 # --- Utility: Fetch last 5 messages per user ---
 def get_chat_history(user_id, limit=5):
@@ -44,7 +49,7 @@ def generate_response(user_id, message):
     prompt = build_prompt(history, message)
     input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(device)
 
-    output = model.generate(input_ids, max_new_tokens=256, do_sample=True, top_p=0.9, temperature=0.7)
+    output = model.generate(input_ids, max_new_tokens=256, do_sample=True, top_p=0.85, temperature=0.9)
     result = tokenizer.decode(output[0][input_ids.shape[-1]:], skip_special_tokens=True).strip()
     return result
 

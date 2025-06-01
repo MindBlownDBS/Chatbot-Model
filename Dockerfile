@@ -19,5 +19,7 @@ RUN pip install --no-cache-dir \
 # Salin semua source code ke dalam container
 COPY . .
 
+EXPOSE 8000
+
 # Jalankan aplikasi Flask
 CMD ["python", "app.py"]
