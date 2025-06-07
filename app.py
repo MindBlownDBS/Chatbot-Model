@@ -1,16 +1,20 @@
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
 from datetime import datetime
+from dotenv import load_dotenv
+import os
 
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel
 
+load_dotenv()
 # --- Setup Flask ---
 app = Flask(__name__)
 
 # --- Setup MongoDB ---
-client = MongoClient("xxxx")  # ganti sesuai MongoDB-mu
+mongo_uri = os.getenv("MONGO_URI")
+client = MongoClient(mongo_uri)  # ganti sesuai MongoDB-mu
 db = client["mind-blown"]
 collection = db["chatHistory"]
 
