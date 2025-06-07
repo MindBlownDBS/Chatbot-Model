@@ -10,9 +10,9 @@ from peft import PeftModel
 app = Flask(__name__)
 
 # --- Setup MongoDB ---
-client = MongoClient("mongodb://localhost:27017")  # ganti sesuai MongoDB-mu
-db = client["model_ml"]
-collection = db["chatbot_chats"]
+client = MongoClient("xxxx")  # ganti sesuai MongoDB-mu
+db = client["mind-blown"]
+collection = db["chatHistory"]
 
 # --- Load Model and Tokenizer ---
 device = "cpu"
