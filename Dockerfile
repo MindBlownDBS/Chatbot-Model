@@ -19,10 +19,10 @@ RUN pip install --no-cache-dir \
 # Salin semua source code ke dalam container
 COPY . .
 
-# Download base model lokal
-RUN python download_model.py
+# # Download base model lokal di dalam container
+# RUN python download_model.py
 
-EXPOSE 8000
+EXPOSE 7860
 
 # Jalankan aplikasi Flask
 CMD ["python", "app.py"]
